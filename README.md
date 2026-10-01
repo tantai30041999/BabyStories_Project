@@ -11,6 +11,21 @@ npm run build     # production build in dist/
 npm run preview   # serve the production build
 ```
 
+## Deploy to GitHub Pages
+
+Live site: **https://tantai30041999.github.io/BabyStories_Project/**
+
+The workflow in `.github/workflows/deploy.yml` builds the app and publishes it every time you push to the repo's **default branch**. Pushes to other branches only run a build check.
+
+One-time setup on GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+
+How it works:
+- `BASE_PATH` is set to `/BabyStories_Project/` during the build. Vite uses it for file URLs and React Router uses it as its `basename`. Locally it stays `/`.
+- The build also writes `dist/404.html` (a copy of `index.html`). This means refreshing a deep link such as `/albums` opens the app instead of GitHub's 404 page.
+- To build like GitHub does on your own machine: `BASE_PATH=/BabyStories_Project/ npm run build` (in Git Bash, put `MSYS_NO_PATHCONV=1` in front).
+
+Photos are stored in each visitor's own browser, so the published site does not contain or share anyone's photos.
+
 ## Features
 
 - **Upload (home page)**: one big, cute upload card. Drag & drop, choose, or paste many photos at once (up to 30). Set each photo's date, pick an **existing album or create a new one** right there, and add an optional note.
