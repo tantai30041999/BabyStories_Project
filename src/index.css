@@ -1,0 +1,488 @@
+@import "tailwindcss";
+
+/* Phones turned sideways: too short for a top bar + bottom tab bar. */
+@custom-variant short (@media (orientation: landscape) and (max-height: 500px));
+/* Finger input (phones, tablets) — bigger tap targets, no hover-only UI. */
+@custom-variant touch (@media (pointer: coarse));
+
+/* ───────────────────────── Cute themes ─────────────────────────
+   Each theme only sets raw tokens; Tailwind utilities (bg-primary,
+   text-ink, border-line…) read them through @theme inline below. */
+
+/* Style tokens every theme gets (set on each [data-theme] element so
+   var(--primary) resolves to that element's own palette). Bold themes
+   override them further down. */
+:root,
+[data-theme] {
+  --display-font: "Fredoka";
+  --card-border: 1px solid var(--line);
+  --theme-shadow-soft: 0 12px 32px -14px color-mix(in oklab, var(--primary) 45%, transparent);
+  --theme-shadow-pop: 0 18px 50px -18px color-mix(in oklab, var(--primary) 60%, transparent);
+  --pattern: none;
+  --pattern-size: auto;
+  --pattern-mask: none;
+  /* read by the video / collage renderer */
+  --canvas-pattern: dots;
+}
+
+:root,
+[data-theme="strawberry"] {
+  color-scheme: light;
+  --bg: #fff6f9;
+  --surface: #ffffff;
+  --surface-2: #ffeaf1;
+  --line: #ffd9e5;
+  --ink: #4b2537;
+  --muted: #a07286;
+  --primary: #ff6f9c;
+  --primary-ink: #ffffff;
+  --accent: #ffb86b;
+  --blob-1: #ffd1df;
+  --blob-2: #ffe7c2;
+}
+
+[data-theme="mint"] {
+  color-scheme: light;
+  --bg: #f2fbf7;
+  --surface: #ffffff;
+  --surface-2: #e2f6ec;
+  --line: #c8ecd9;
+  --ink: #1f4034;
+  --muted: #6b9383;
+  --primary: #34b886;
+  --primary-ink: #ffffff;
+  --accent: #7cc8ff;
+  --blob-1: #c9f1de;
+  --blob-2: #d6ecff;
+}
+
+[data-theme="lavender"] {
+  color-scheme: light;
+  --bg: #f7f4ff;
+  --surface: #ffffff;
+  --surface-2: #eee8ff;
+  --line: #ddd3fb;
+  --ink: #342a57;
+  --muted: #8479a8;
+  --primary: #9270ff;
+  --primary-ink: #ffffff;
+  --accent: #ff9ecf;
+  --blob-1: #e3d9ff;
+  --blob-2: #ffd9ec;
+}
+
+[data-theme="peach"] {
+  color-scheme: light;
+  --bg: #fff8f1;
+  --surface: #ffffff;
+  --surface-2: #ffeedd;
+  --line: #ffdcc0;
+  --ink: #4d3021;
+  --muted: #a47d66;
+  --primary: #ff8f4d;
+  --primary-ink: #ffffff;
+  --accent: #ffcc3d;
+  --blob-1: #ffdcc4;
+  --blob-2: #fff0b8;
+}
+
+[data-theme="sky"] {
+  color-scheme: light;
+  --bg: #f3f9ff;
+  --surface: #ffffff;
+  --surface-2: #e3f1ff;
+  --line: #cfe5fb;
+  --ink: #1f3552;
+  --muted: #6d88a8;
+  --primary: #4a9ff0;
+  --primary-ink: #ffffff;
+  --accent: #ffadc9;
+  --blob-1: #d3e9ff;
+  --blob-2: #ffe0ea;
+}
+
+[data-theme="lemon"] {
+  color-scheme: light;
+  --bg: #fffbea;
+  --surface: #ffffff;
+  --surface-2: #fff3c4;
+  --line: #ffe89a;
+  --ink: #4a3b12;
+  --muted: #9c8a52;
+  --primary: #f0ad00;
+  --primary-ink: #3d2f08;
+  --accent: #ff9f7a;
+  --blob-1: #fff0a8;
+  --blob-2: #ffe0d1;
+}
+
+[data-theme="cocoa"] {
+  color-scheme: light;
+  --bg: #fbf6f1;
+  --surface: #ffffff;
+  --surface-2: #f3e8dd;
+  --line: #e8d6c4;
+  --ink: #3f2b1f;
+  --muted: #8f7361;
+  --primary: #a86f50;
+  --primary-ink: #ffffff;
+  --accent: #f2a7a0;
+  --blob-1: #efdccb;
+  --blob-2: #f8dcd8;
+}
+
+[data-theme="midnight"] {
+  color-scheme: dark;
+  --bg: #17152b;
+  --surface: #221f3b;
+  --surface-2: #2d2950;
+  --line: #3a3563;
+  --ink: #f3eeff;
+  --muted: #a49cc9;
+  --primary: #ff8fb8;
+  --primary-ink: #1a1730;
+  --accent: #ffd37a;
+  --blob-1: #3b2d6b;
+  --blob-2: #4a2550;
+}
+
+/* ───────────────────────── Bold boy themes ───────────────────────── */
+
+/* Animals */
+[data-theme="safari"] {
+  color-scheme: light;
+  --bg: #fbf6e9;
+  --surface: #fffdf7;
+  --surface-2: #f3e8c9;
+  --line: #e2d2a4;
+  --ink: #2e2a14;
+  --muted: #7d7350;
+  --primary: #e07a10;
+  --primary-ink: #ffffff;
+  --accent: #4f9a2c;
+  --blob-1: #f7d9a0;
+  --blob-2: #cfe5b0;
+  --display-font: "Lilita One";
+  --card-border: 2.5px solid var(--ink);
+  --theme-shadow-soft: 0 6px 0 color-mix(in oklab, var(--ink) 85%, transparent);
+  --theme-shadow-pop: 0 9px 0 var(--ink);
+  --pattern:
+    radial-gradient(ellipse 15px 11px at 20% 28%, color-mix(in oklab, var(--primary) 26%, transparent) 55%, transparent 60%),
+    radial-gradient(ellipse 10px 14px at 68% 62%, color-mix(in oklab, var(--ink) 14%, transparent) 55%, transparent 60%),
+    radial-gradient(ellipse 9px 7px at 42% 86%, color-mix(in oklab, var(--primary) 22%, transparent) 55%, transparent 60%),
+    radial-gradient(ellipse 7px 9px at 88% 18%, color-mix(in oklab, var(--accent) 22%, transparent) 55%, transparent 60%);
+  --pattern-size: 110px 110px;
+  --canvas-pattern: spots;
+}
+
+[data-theme="dino"] {
+  color-scheme: light;
+  --bg: #eef8ea;
+  --surface: #fbfff9;
+  --surface-2: #dbf0d1;
+  --line: #b9dea8;
+  --ink: #15331c;
+  --muted: #557a5c;
+  --primary: #23944f;
+  --primary-ink: #ffffff;
+  --accent: #ff7a2e;
+  --blob-1: #c8ebc4;
+  --blob-2: #ffdcbd;
+  --display-font: "Lilita One";
+  --card-border: 2.5px solid var(--ink);
+  --theme-shadow-soft: 0 6px 0 color-mix(in oklab, var(--ink) 85%, transparent);
+  --theme-shadow-pop: 0 9px 0 var(--ink);
+  --pattern: radial-gradient(circle at 50% 0, transparent 14px, color-mix(in oklab, var(--primary) 18%, transparent) 15px 17px, transparent 18px);
+  --pattern-size: 34px 17px;
+  --canvas-pattern: scales;
+}
+
+/* Super heroes */
+[data-theme="hero"] {
+  color-scheme: light;
+  --bg: #eef3ff;
+  --surface: #ffffff;
+  --surface-2: #dde7ff;
+  --line: #b9ccff;
+  --ink: #0d1d57;
+  --muted: #56659a;
+  --primary: #e0202b;
+  --primary-ink: #ffffff;
+  --accent: #ffc000;
+  --blob-1: #ffd0d3;
+  --blob-2: #c6d7ff;
+  --display-font: "Bangers";
+  --card-border: 3px solid var(--ink);
+  --theme-shadow-soft: 5px 5px 0 var(--ink);
+  --theme-shadow-pop: 8px 8px 0 var(--ink);
+  --pattern:
+    radial-gradient(color-mix(in oklab, var(--primary) 20%, transparent) 2px, transparent 2.6px),
+    repeating-linear-gradient(-35deg, transparent 0 46px, color-mix(in oklab, var(--accent) 16%, transparent) 46px 52px);
+  --pattern-size: 16px 16px, auto;
+  --canvas-pattern: halftone;
+}
+
+[data-theme="thunder"] {
+  color-scheme: dark;
+  --bg: #0f1220;
+  --surface: #191e33;
+  --surface-2: #242a46;
+  --line: #353d62;
+  --ink: #eef1ff;
+  --muted: #9aa3c7;
+  --primary: #ffd400;
+  --primary-ink: #14141c;
+  --accent: #3da5ff;
+  --blob-1: #1f2d63;
+  --blob-2: #3d3210;
+  --display-font: "Bangers";
+  --card-border: 2.5px solid var(--primary);
+  --theme-shadow-soft: 5px 5px 0 var(--primary);
+  --theme-shadow-pop: 8px 8px 0 var(--primary);
+  --pattern: repeating-linear-gradient(-45deg, color-mix(in oklab, var(--primary) 7%, transparent) 0 12px, transparent 12px 44px);
+  --canvas-pattern: stripes;
+}
+
+/* Anime */
+[data-theme="anime"] {
+  color-scheme: light;
+  --bg: #fff6ee;
+  --surface: #ffffff;
+  --surface-2: #ffe6d3;
+  --line: #ffcfac;
+  --ink: #191b3a;
+  --muted: #6d6890;
+  --primary: #ff6410;
+  --primary-ink: #ffffff;
+  --accent: #2878ff;
+  --blob-1: #ffd4b5;
+  --blob-2: #cddfff;
+  --display-font: "Mochiy Pop One";
+  --card-border: 2.5px solid var(--ink);
+  --theme-shadow-soft: 4px 4px 0 var(--ink);
+  --theme-shadow-pop: 7px 7px 0 var(--ink);
+  --pattern: repeating-conic-gradient(from 0deg at 50% 30%, color-mix(in oklab, var(--ink) 8%, transparent) 0deg 1.4deg, transparent 1.4deg 8deg);
+  --pattern-mask: radial-gradient(circle at 50% 30%, transparent 18%, #000 65%);
+  --canvas-pattern: speedlines;
+}
+
+[data-theme="neo"] {
+  color-scheme: dark;
+  --bg: #130c29;
+  --surface: #1e1540;
+  --surface-2: #2a1f55;
+  --line: #3f3078;
+  --ink: #f7f1ff;
+  --muted: #ab9dda;
+  --primary: #ff3d9a;
+  --primary-ink: #ffffff;
+  --accent: #22e0ff;
+  --blob-1: #3a1f6e;
+  --blob-2: #0d3a5a;
+  --display-font: "Mochiy Pop One";
+  --card-border: 1.5px solid color-mix(in oklab, var(--accent) 55%, transparent);
+  --theme-shadow-soft: 0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent), 0 10px 34px -10px var(--primary);
+  --theme-shadow-pop: 0 0 0 2px var(--primary), 0 16px 50px -12px var(--primary);
+  --pattern:
+    linear-gradient(color-mix(in oklab, var(--accent) 12%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--accent) 12%, transparent) 1px, transparent 1px);
+  --pattern-size: 44px 44px;
+  --canvas-pattern: grid;
+}
+
+/* ───────────────────────── Vietnamese ─────────────────────────
+   Fredoka, Lilita One and Mochiy Pop One have no Vietnamese glyphs
+   (ă ơ ư ạ ế…), so swap in look-alike fonts that do. Bangers is fine. */
+html[lang="vi"],
+html[lang="vi"] [data-theme] {
+  --display-font: "Baloo 2";
+}
+html[lang="vi"][data-theme="safari"],
+html[lang="vi"] [data-theme="safari"],
+html[lang="vi"][data-theme="dino"],
+html[lang="vi"] [data-theme="dino"],
+html[lang="vi"][data-theme="anime"],
+html[lang="vi"] [data-theme="anime"] {
+  --display-font: "Paytone One";
+}
+html[lang="vi"][data-theme="neo"],
+html[lang="vi"] [data-theme="neo"] {
+  --display-font: "Chakra Petch";
+}
+html[lang="vi"][data-theme="hero"],
+html[lang="vi"] [data-theme="hero"],
+html[lang="vi"][data-theme="thunder"],
+html[lang="vi"] [data-theme="thunder"] {
+  --display-font: "Bangers";
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-ink: var(--primary-ink);
+  --color-accent: var(--accent);
+
+  --shadow-soft: var(--theme-shadow-soft);
+  --shadow-pop: var(--theme-shadow-pop);
+  --font-display: var(--display-font), "Nunito", ui-rounded, system-ui, sans-serif;
+}
+
+@theme {
+  --font-sans: "Nunito", ui-rounded, system-ui, sans-serif;
+
+  --animate-float: float 14s ease-in-out infinite;
+  --animate-wiggle: wiggle 0.6s ease-in-out;
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -40px) scale(1.08); }
+  }
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-12deg); }
+    75% { transform: rotate(12deg); }
+  }
+}
+
+/* ───────────────────────── Base ───────────────────────── */
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  /* single-weight display fonts (Bangers, Lilita One…) must not get faux-bold */
+  font-synthesis-weight: none;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--primary) 30%, transparent);
+}
+
+/* ───────────────────────── Components ───────────────────────── */
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.6rem 1.15rem;
+    font-weight: 800;
+    font-size: 0.9rem;
+    transition: transform 0.15s ease, background-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s;
+    cursor: pointer;
+  }
+  .btn:active {
+    transform: scale(0.96);
+  }
+  .btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: var(--primary-ink);
+    box-shadow: var(--shadow-soft);
+  }
+  @media (hover: hover) {
+    .btn-primary:hover:not(:disabled) {
+      box-shadow: var(--shadow-pop);
+    }
+    .btn-ghost:hover {
+      background: color-mix(in oklab, var(--surface-2) 70%, var(--line));
+    }
+  }
+  .btn-ghost {
+    background: var(--surface-2);
+    color: var(--ink);
+  }
+
+  .card {
+    background: var(--surface);
+    border: var(--card-border);
+    border-radius: 1.75rem;
+  }
+
+  .input {
+    width: 100%;
+    background: var(--surface-2);
+    border: 2px solid transparent;
+    border-radius: 1rem;
+    padding: 0.7rem 1rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+  .input::placeholder {
+    color: var(--muted);
+  }
+  .input:focus {
+    border-color: color-mix(in oklab, var(--primary) 60%, transparent);
+    background: var(--surface);
+  }
+
+  /* themed background pattern layer (animal spots, halftone, speed lines…) */
+  .theme-pattern {
+    background-image: var(--pattern);
+    background-size: var(--pattern-size);
+    mask-image: var(--pattern-mask);
+  }
+
+  .story-ring {
+    background: conic-gradient(from 200deg, var(--primary), var(--accent), var(--primary));
+  }
+  .story-ring-seen {
+    background: var(--line);
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ───────────────────────── Devices ───────────────────────── */
+
+/* iOS Safari zooms the page when a field under 16px gets focus. */
+@media (pointer: coarse) {
+  input:not([type="checkbox"], [type="radio"], [type="range"], [type="file"]),
+  select,
+  textarea {
+    font-size: max(16px, 1em) !important;
+  }
+}
+
+/* iOS ignores width/height on native date fields unless appearance is reset. */
+input[type="date"].input {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  min-height: 3rem;
+  text-align: left;
+}
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+/* Native select gets the same rounded look everywhere (Android draws its own otherwise). */
+select.input {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
